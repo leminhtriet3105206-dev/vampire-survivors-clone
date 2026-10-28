@@ -1,18 +1,21 @@
+# -*- coding: utf-8 -*-
 """
-Vampire Survivors Clone - Python / Pygame
-==========================================
-Kontroller:
-  WASD / Ok tuşları  -> hareket
-  ESC                -> çıkış
-  P                  -> duraklat
+Vampire Survivors Clone - Python / Pygame (Bản Tiếng Việt)
+==========================================================
+Điều khiển:
+  WASD / Phím mũi tên  -> di chuyển
+  ESC                  -> thoát / menu chính
+  P                    -> tạm dừng
+  L                    -> đổi ngôn ngữ
+  M                    -> bật / tắt âm thanh
 
-Özellikler:
-  - Oyuncuya otomatik saldıran silah sistemi (whip, orb, aura)
-  - Düşman spawn sistemi (wave tabanlı, artan zorluk)
-  - XP & level-up sistemi + upgrade seçimi
-  - Sağlık çubuğu, XP çubuğu, zamanlayıcı
-  - Particle efektleri
-  - Birden fazla düşman tipi
+Tính năng:
+  - Hệ thống vũ khí tự động tấn công (roi, cầu phép, hào quang, boomerang, gậy sét, đũa băng)
+  - Hệ thống quái xuất hiện theo đợt (wave), tăng dần độ khó
+  - Hệ thống XP, thăng cấp và chọn lựa nâng cấp kỹ năng
+  - Thanh máu, thanh kinh nghiệm, đồng hồ thời gian
+  - Hiệu ứng hạt (particle) và số sát thương nhảy nổi
+  - Nhiều loại quái vật và Boss kịch tính
 """
 
 import pygame
@@ -24,6 +27,17 @@ from dataclasses import dataclass, field
 from typing import List, Optional
 from enum import Enum, auto
 import audio_settings
+
+# ---------------------------------------------------------------------------
+# Cấu hình Font hệ thống hỗ trợ tiếng Việt (Windows / macOS / Linux)
+# ---------------------------------------------------------------------------
+FONT_NAMES = "segoeui,arial,tahoma,timesnewroman,dejavusans"
+
+def get_sys_font(size: int, bold: bool = False, italic: bool = False) -> pygame.font.Font:
+    """Khởi tạo font hệ thống hỗ trợ tiếng Việt có dấu mượt mà, tránh lỗi ô vuông ký tự."""
+    if not pygame.font.get_init():
+        pygame.font.init()
+    return pygame.font.SysFont(FONT_NAMES, size, bold=bold, italic=italic)
 
 # ---------------------------------------------------------------------------
 # Başarım sistemi
@@ -54,12 +68,12 @@ class AchievementDef:
 
 
 ACHIEVEMENT_DEFS: List[AchievementDef] = [
-    AchievementDef(AchievementID.FIRST_BLOOD,     "", "First Blood",     "İlk düşmanı öldür"),
-    AchievementDef(AchievementID.MONSTER_SLAYER,  "", "Monster Slayer",  "100 düşman öldür"),
-    AchievementDef(AchievementID.SURVIVOR,        "", "Survivor",        "10 dakika hayatta kal"),
-    AchievementDef(AchievementID.RICH,            "", "Rich",            "1000 altın biriktir"),
-    AchievementDef(AchievementID.BOSS_HUNTER,     "", "Boss Hunter",     "İlk boss'u öldür"),
-    AchievementDef(AchievementID.TREASURE_SEEKER, "", "Treasure Seeker", "10 sandık aç"),
+    AchievementDef(AchievementID.FIRST_BLOOD,     "", "Chiến công đầu",   "Tiêu diệt kẻ địch đầu tiên"),
+    AchievementDef(AchievementID.MONSTER_SLAYER,  "", "Thợ săn quái vật", "Tiêu diệt 100 kẻ địch"),
+    AchievementDef(AchievementID.SURVIVOR,        "", "Kẻ sống sót",      "Sống sót trong 10 phút"),
+    AchievementDef(AchievementID.RICH,            "", "Đại gia",          "Tích lũy 1000 vàng"),
+    AchievementDef(AchievementID.BOSS_HUNTER,     "", "Thợ săn Boss",     "Tiêu diệt Boss đầu tiên"),
+    AchievementDef(AchievementID.TREASURE_SEEKER, "", "Kẻ tìm kho báu",   "Mở 10 rương báu"),
 ]
 _DEF_BY_ID: dict = {d.id: d for d in ACHIEVEMENT_DEFS}
 
@@ -149,9 +163,9 @@ class AchievementManager:
         if self._active is None:
             return
         if self._f_label is None:
-            self._f_label = pygame.font.SysFont("segoeui", 12)
-            self._f_title = pygame.font.SysFont("segoeui", 15, bold=True)
-            self._f_desc  = pygame.font.SysFont("segoeui", 13)
+            self._f_label = get_sys_font(12)
+            self._f_title = get_sys_font(15, bold=True)
+            self._f_desc  = get_sys_font(13)
         toast = self._active
         defn  = _DEF_BY_ID[toast.ach_id]
         alpha = toast.alpha
@@ -325,9 +339,9 @@ class QuestManager:
 
     def draw_panel(self, surf, screen_h: int):
         if self._font_title is None:
-            self._font_title = pygame.font.SysFont("segoeui", 14, bold=True)
-            self._font_item  = pygame.font.SysFont("segoeui", 13)
-            self._font_prog  = pygame.font.SysFont("segoeui", 12)
+            self._font_title = get_sys_font(14, bold=True)
+            self._font_item  = get_sys_font(13)
+            self._font_prog  = get_sys_font(12)
 
         active = [q for q in self.quests if not q.done][:self.MAX_ACTIVE]
         if not active:
@@ -383,7 +397,7 @@ class QuestManager:
     def draw_notifications(self, surf, screen_w: int, start_y: int = 80):
         if self._font_title is None:
             return
-        font_notif = pygame.font.SysFont("segoeui", 20, bold=True)
+        font_notif = get_sys_font(20, bold=True)
         offset_y = start_y
         for msg, t, *_ in self.notif_queue:
             alpha  = min(255, t * 4)
@@ -398,7 +412,7 @@ class QuestManager:
             surf.blit(ns, (nx, ny))
             offset_y += ns.get_height() + 12
 
-        font_new = pygame.font.SysFont("segoeui", 17, bold=True)
+        font_new = get_sys_font(17, bold=True)
         for msg, t in self.new_quest_notif:
             alpha = min(255, t * 5)
             ns    = font_new.render(msg, True, (120, 200, 255))
@@ -406,11 +420,143 @@ class QuestManager:
             surf.blit(ns, (screen_w - ns.get_width() - 16, 76))
 
 # ---------------------------------------------------------------------------
-# Dil sistemi (TR / EN)
+# Hệ thống ngôn ngữ / Dil sistemi (VI / EN / TR)
 # ---------------------------------------------------------------------------
-LANG = "TR"  # Başlangıç dili
+LANG = "VI"  # Ngôn ngữ khởi đầu mặc định: Tiếng Việt
+_last_non_en = "TR"
 
 STRINGS = {
+    "VI": {
+        "title":                 "Vampire Survivors Clone",
+        "paused":                "TẠM DỪNG",
+        "game_over":             "TRÒ CHƠI KẾT THÚC",
+        "time":                  "Thời gian",
+        "level":                 "Cấp",
+        "kill":                  "Hạ gục",
+        "wave":                  "Đợt",
+        "restart":               "[R] Chơi lại   [ESC] Menu chính",
+        "controls":              "WASD: Di chuyển  P: Tạm dừng  L: Đổi ngôn ngữ  M: Âm thanh  ESC: Menu chính",
+        "controls_btn":          "Điều khiển",
+        "controls_title":        "BẢNG ĐIỀU KHIỂN",
+        "close":                 "Đóng",
+        "ctl_move":              ("WASD / Phím mũi tên", "Di chuyển"),
+        "ctl_pause":             ("P", "Tạm dừng / Tiếp tục"),
+        "ctl_lang":              ("L", "Đổi ngôn ngữ"),
+        "ctl_sound":             ("M", "Bật / Tắt âm thanh"),
+        "ctl_upgrade":           ("1 / 2 / 3 hoặc Chuột", "Chọn nâng cấp"),
+        "ctl_restart":           ("R", "Chơi lại (sau khi kết thúc)"),
+        "ctl_menu":              ("ESC", "Menu chính (Đóng bảng khi mở)"),
+        "weapons":               "Roi Lv{w}  Cầu Lv{o}  Hào quang Lv{a}  Boomerang Lv{b}  Giáp {ar}  Hồi phục {r}",
+        "weapons_title":         "Vũ khí",
+        "wpn_whip":              "Roi da",
+        "wpn_orb":               "Cầu phép",
+        "wpn_aura":              "Hào quang",
+        "wpn_boomerang":         "Boomerang",
+        "wpn_lightning":         "Sấm sét",
+        "wpn_ice":               "Băng giá",
+        "wpn_armor":             "Giáp",
+        "wpn_regen":             "Hồi phục",
+        "level_up":              "LÊN CẤP!",
+        "choose":                "Chọn một nâng cấp",
+        "click_hint":            "Nhấp chuột hoặc [1/2/3]",
+        "hp":                    "HP",
+        "lv":                    "LV",
+        "xp":                    "XP",
+        "muted":                 "Âm thanh: TẮT",
+        "unmuted":               "Âm thanh: BẬT",
+        "lang_label":            "VI",
+        "ach_unlocked":          "MỞ KHÓA THÀNH TỰU!",
+        "ach_first_blood_title": "Chiến công đầu",
+        "ach_first_blood_desc":  "Tiêu diệt kẻ địch đầu tiên",
+        "ach_monster_slayer_title": "Thợ săn quái vật",
+        "ach_monster_slayer_desc": "Tiêu diệt 100 kẻ địch",
+        "ach_survivor_title":    "Kẻ sống sót",
+        "ach_survivor_desc":     "Sống sót trong 10 phút",
+        "ach_rich_title":        "Đại gia",
+        "ach_rich_desc":         "Tích lũy 1000 vàng",
+        "ach_boss_hunter_title": "Thợ săn Boss",
+        "ach_boss_hunter_desc":  "Tiêu diệt Boss đầu tiên",
+        "ach_treasure_seeker_title": "Kẻ tìm kho báu",
+        "ach_treasure_seeker_desc": "Mở 10 rương báu",
+        "upgrade_names": {
+            "MAX_HP":            "Tăng Máu",
+            "SPEED":             "Tăng Tốc",
+            "WHIP":              "Nâng cấp Roi",
+            "ORB":               "Nâng cấp Cầu",
+            "AURA":              "Nâng cấp Hào quang",
+            "BOOMERANG":         "Nâng cấp Boomerang",
+            "LIGHTNING_STAFF":   "Gậy sấm sét",
+            "ICE_WAND":          "Đũa phép băng",
+            "RECOVERY":          "Hồi phục",
+            "ARMOR":             "Giáp bảo hộ",
+        },
+        "upgrade_descs": {
+            "MAX_HP":            "+40 máu tối đa",
+            "SPEED":             "+10% tốc độ di chuyển",
+            "WHIP":              "Tăng sát thương & tầm đánh",
+            "ORB":               "Thêm cầu & tăng sát thương",
+            "AURA":              "Tăng phạm vi & sát thương",
+            "BOOMERANG":         "Tăng sát thương, tốc độ & tầm xa",
+            "LIGHTNING_STAFF":   "Tăng sát thương & phạm vi sét",
+            "ICE_WAND":          "Tăng sát thương & làm chậm",
+            "RECOVERY":          "+1 HP/giây hồi phục",
+            "ARMOR":             "Giảm sát thương nhận vào",
+        },
+        # Menu
+        "menu_play":             "Bắt đầu chơi",
+        "menu_campaign":         "Chiến dịch",
+        "menu_settings":         "Cài đặt",
+        "menu_chars":            "Nhân vật",
+        "menu_quit":             "Thoát",
+        "menu_back":             "Quay lại",
+        "main_menu":             "Menu chính",
+        "campaign_title":        "Chế độ Chiến dịch",
+        "campaign_level":        "Màn {n}",
+        "target_wave":           "Mục tiêu Đợt {n}",
+        "completed":             "HOÀN THÀNH",
+        "level_completed":       "HOÀN THÀNH MÀN CHƠI!",
+        "next_level":            "Màn tiếp theo",
+        "menu_sound":            "Âm thanh",
+        "vol_master":            "Âm lượng tổng",
+        "vol_music":             "Nhạc nền",
+        "vol_sfx":               "Hiệu ứng âm thanh",
+        "vol_coin":              "Âm thanh tiền vàng",
+        "menu_sound_on":         "BẬT",
+        "menu_sound_off":        "TẮT",
+        "menu_fullscreen":       "Toàn màn hình",
+        "menu_fs_on":            "BẬT",
+        "menu_fs_off":           "TẮT",
+        "boss_fight":            "BOSS XUẤT HIỆN!",
+        "boss_tag":              "TRÙM",
+        "gold":                  "Vàng",
+        "drone_turret":          "Drone: {d}  Tháp pháo: {t}",
+        # Nhiệm vụ
+        "quests_title":          "NHIỆM VỤ",
+        "quest_kill":            "Tiêu diệt {n} kẻ địch",
+        "quest_survive":         "Sống sót {n} phút",
+        "quest_gold":            "Thu thập {n} vàng",
+        "quest_reward":          "+{r} Vàng",
+        "quest_done":            "HOÀN THÀNH",
+        "quest_new":             "NHIỆM VỤ MỚI!",
+        "quest_complete_notif":  "Nhiệm vụ hoàn thành! +{r} Vàng",
+        "locked":                "KHÓA",
+        "buy":                   "Mua",
+        "owned":                 "ĐÃ MỞ",
+        "not_enough":            "Không đủ vàng",
+        "selected":              "ĐÃ CHỌN",
+        "char_names": {
+            "warrior":           "Chiến binh",
+            "rogue":             "Đạo tặc",
+            "mage":              "Pháp sư",
+            "paladin":           "Hiệp sĩ",
+        },
+        "char_descs": {
+            "warrior":           "+40 Máu, +2 Giáp",
+            "rogue":             "+20% Tốc độ, +1 HP/s",
+            "mage":              "Bắt đầu với Cầu phép Lv2",
+            "paladin":           "+80 Máu, +3 Giáp, -10% Tốc",
+        },
+    },
     "TR": {
         "title":         "Vampire Survivors Clone",
         "paused":        "DURAKLATILDI",
@@ -512,7 +658,9 @@ STRINGS = {
         "menu_fs_on":     "AÇIK",
         "menu_fs_off":    "KAPALI",
         "boss_fight":     "BOSS SAVAŞI!",
+        "boss_tag":       "BOSS",
         "gold":           "Altın",
+        "drone_turret":   "Drone: {d}  Taret: {t}",
         # Görev sistemi
         "quests_title":         "GÖREVLER",
         "quest_kill":           "{n} düşman öldür",
@@ -643,7 +791,9 @@ STRINGS = {
         "menu_fs_on":     "ON",
         "menu_fs_off":    "OFF",
         "boss_fight":     "BOSS FIGHT!",
+        "boss_tag":       "BOSS",
         "gold":           "Gold",
+        "drone_turret":   "Drone: {d}  Turret: {t}",
         # Quest system
         "quests_title":         "QUESTS",
         "quest_kill":           "Kill {n} enemies",
@@ -676,15 +826,22 @@ STRINGS = {
 }
 
 def T(key, **kwargs):
-    """Mevcut dilde string döndürür."""
-    s = STRINGS[LANG].get(key, key)
-    if kwargs:
+    """Mevcut dilde string döndürür / Trả về chuỗi theo ngôn ngữ hiện tại."""
+    global _last_non_en
+    if LANG in ("VI", "TR"):
+        _last_non_en = LANG
+    s = STRINGS.get(LANG, STRINGS["VI"]).get(key, key)
+    if kwargs and isinstance(s, str):
         s = s.format(**kwargs)
     return s
 
 def toggle_lang():
-    global LANG
-    LANG = "EN" if LANG == "TR" else "TR"
+    global LANG, _last_non_en
+    if LANG in ("VI", "TR"):
+        _last_non_en = LANG
+        LANG = "EN"
+    else:
+        LANG = _last_non_en
 
 # ---------------------------------------------------------------------------
 # Ses motoru (prosedürel — harici dosya gerektirmez)
@@ -1951,9 +2108,9 @@ class UpgradeScreen:
     def __init__(self, available):
         self.choices = random.sample(available, min(3, len(available)))
         self.hovered = None
-        self.font_big  = pygame.font.SysFont("segoeui", 28, bold=True)
-        self.font_med  = pygame.font.SysFont("segoeui", 20)
-        self.font_sm   = pygame.font.SysFont("segoeui", 16)
+        self.font_big  = get_sys_font(28, bold=True)
+        self.font_med  = get_sys_font(20)
+        self.font_sm   = get_sys_font(16)
 
     def draw(self, surf):
         # Karartma
@@ -2280,9 +2437,9 @@ class Boss:
         fill = int(bw * self.hp / self.max_hp)
         pygame.draw.rect(surf, (255, 40, 200), (bx, by, fill, 8))
         pygame.draw.rect(surf, self.RING_COLOR, (bx, by, bw, 8), 1)
-        # "BOSS" etiketi
-        font = pygame.font.SysFont("segoeui", 13, bold=True)
-        lbl  = font.render("BOSS", True, self.RING_COLOR)
+        # Nhãn BOSS
+        font = get_sys_font(13, bold=True)
+        lbl  = font.render(T("boss_tag"), True, self.RING_COLOR)
         surf.blit(lbl, (sx - lbl.get_width() // 2, by - 14))
 
 
@@ -2505,32 +2662,32 @@ class Turret:
 CHARACTER_DEFS = [
     {
         "id":    "warrior",
-        "name":  "Savaşçı",
-        "desc":  "+40 HP, +2 Zırh",
-        "cost":  0,             # Başlangıç karakteri — ücretsiz
+        "name":  "Chiến binh",
+        "desc":  "+40 Máu, +2 Giáp",
+        "cost":  0,             # Khởi đầu — miễn phí
         "color": (120, 220, 255),
         "mods":  {"max_hp": 40, "armor": 2},
     },
     {
         "id":    "rogue",
-        "name":  "Haydut",
-        "desc":  "+20% Hız, +1 HP/sn",
+        "name":  "Đạo tặc",
+        "desc":  "+20% Tốc độ, +1 HP/s",
         "cost":  150,
         "color": (255, 180, 60),
         "mods":  {"speed_mult": 0.2, "recovery": 1},
     },
     {
         "id":    "mage",
-        "name":  "Büyücü",
-        "desc":  "Orb Lv2 başlar",
+        "name":  "Pháp sư",
+        "desc":  "Khởi đầu Cầu phép Lv2",
         "cost":  200,
         "color": (180, 80, 255),
         "mods":  {"orb_level": 1},
     },
     {
         "id":    "paladin",
-        "name":  "Paladin",
-        "desc":  "+80 HP, +3 Zırh, -10% Hız",
+        "name":  "Hiệp sĩ",
+        "desc":  "+80 Máu, +3 Giáp, -10% Tốc",
         "cost":  300,
         "color": (80, 220, 180),
         "mods":  {"max_hp": 80, "armor": 3, "speed_mult": -0.1},
@@ -2698,10 +2855,10 @@ class MainMenu:
     def __init__(self, sfx):
         self.sfx  = sfx
         self.tick = 0
-        self.font_title = pygame.font.SysFont("segoeui", 62, bold=True)
-        self.font_sub   = pygame.font.SysFont("segoeui", 20)
-        self.font_btn   = pygame.font.SysFont("segoeui", 22, bold=True)
-        self.font_ver   = pygame.font.SysFont("segoeui", 13)
+        self.font_title = get_sys_font(62, bold=True)
+        self.font_sub   = get_sys_font(20)
+        self.font_btn   = get_sys_font(22, bold=True)
+        self.font_ver   = get_sys_font(13)
         self._bg_parts  = [self._new_p() for _ in range(55)]
         self._build_buttons()
 
@@ -2794,10 +2951,10 @@ class CampaignScreen:
     def __init__(self, save: SaveData):
         self.save = save
         self.tick = 0
-        self.font_title = pygame.font.SysFont("segoeui", 44, bold=True)
-        self.font_btn   = pygame.font.SysFont("segoeui", 18, bold=True)
-        self.font_sm    = pygame.font.SysFont("segoeui", 14, bold=True)
-        self.font_back  = pygame.font.SysFont("segoeui", 20, bold=True)
+        self.font_title = get_sys_font(44, bold=True)
+        self.font_btn   = get_sys_font(18, bold=True)
+        self.font_sm    = get_sys_font(14, bold=True)
+        self.font_back  = get_sys_font(20, bold=True)
         self._build_buttons()
 
     def _build_buttons(self):
@@ -2892,9 +3049,9 @@ class SettingsScreen:
         self.sfx        = sfx
         self.fullscreen = False
         self.tick       = 0
-        self.font_title = pygame.font.SysFont("segoeui", 44, bold=True)
-        self.font_lbl   = pygame.font.SysFont("segoeui", 22)
-        self.font_btn   = pygame.font.SysFont("segoeui", 20, bold=True)
+        self.font_title = get_sys_font(44, bold=True)
+        self.font_lbl   = get_sys_font(22)
+        self.font_btn   = get_sys_font(20, bold=True)
         self._build_buttons()
 
     def _build_buttons(self):
@@ -2994,12 +3151,12 @@ class CharacterScreen:
         self.tick      = 0
         self.notice    = ""       # "Yetersiz Altın" gibi kısa bildirimler
         self.notice_cd = 0
-        self.font_title = pygame.font.SysFont("segoeui", 40, bold=True)
-        self.font_name  = pygame.font.SysFont("segoeui", 22, bold=True)
-        self.font_desc  = pygame.font.SysFont("segoeui", 16)
-        self.font_cost  = pygame.font.SysFont("segoeui", 18, bold=True)
-        self.font_back  = pygame.font.SysFont("segoeui", 20, bold=True)
-        self.font_gold  = pygame.font.SysFont("segoeui", 20, bold=True)
+        self.font_title = get_sys_font(40, bold=True)
+        self.font_name  = get_sys_font(22, bold=True)
+        self.font_desc  = get_sys_font(16)
+        self.font_cost  = get_sys_font(18, bold=True)
+        self.font_back  = get_sys_font(20, bold=True)
+        self.font_gold  = get_sys_font(20, bold=True)
         bx = SCREEN_W // 2 - 100
         self.btn_back = Button(bx, SCREEN_H - 70, 200, 46, T("menu_back"), self.font_back)
 
@@ -3122,17 +3279,19 @@ BOSS_INTERVAL = 120   # 2 dakikada bir boss
 
 class Game:
     def __init__(self):
+        global _last_non_en
+        _last_non_en = "VI"
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
         pygame.display.set_caption("Vampire Survivors Clone")
         self.clock  = pygame.time.Clock()
         self.sfx    = SoundEngine()
 
-        self.font_sm   = pygame.font.SysFont("segoeui", 16)
-        self.font_med  = pygame.font.SysFont("segoeui", 22, bold=True)
-        self.font_big  = pygame.font.SysFont("segoeui", 36, bold=True)
-        self.font_dmg  = pygame.font.SysFont("segoeui", 15, bold=True)
-        self.font_bar  = pygame.font.SysFont("segoeui", 12, bold=True)
+        self.font_sm   = get_sys_font(16)
+        self.font_med  = get_sys_font(22, bold=True)
+        self.font_big  = get_sys_font(36, bold=True)
+        self.font_dmg  = get_sys_font(15, bold=True)
+        self.font_bar  = get_sys_font(12, bold=True)
 
         # Kalıcı veriler (menüler arası korunur)
         self.save          = SaveData()
@@ -3775,10 +3934,10 @@ class Game:
                 True, (180, 175, 230))
             surf.blit(c_s, (SCREEN_W - c_s.get_width() - 12, 74))
 
-        # Drone / Taret sayısı
+        # Drone / Tháp pháo
         if self.drones or self.turrets:
             dt_s = self.font_sm.render(
-                f"Drone: {len(self.drones)}  Taret: {len(self.turrets)}",
+                T("drone_turret", d=len(self.drones), t=len(self.turrets)),
                 True, (180,220,255))
             surf.blit(dt_s, (16, SCREEN_H - 44))
 
@@ -3800,8 +3959,8 @@ class Game:
         p = self.player
 
         if not hasattr(self, "_wpn_font_title"):
-            self._wpn_font_title = pygame.font.SysFont("segoeui", 14, bold=True)
-            self._wpn_font_row   = pygame.font.SysFont("segoeui", 13)
+            self._wpn_font_title = get_sys_font(14, bold=True)
+            self._wpn_font_row   = get_sys_font(13)
 
         rows = [
             (T("wpn_whip"),      f"Lv{p.whip.level}"),
@@ -3853,7 +4012,7 @@ class Game:
         surf.blit(strip, (0, SCREEN_H // 2 - 40))
         # Yazı (yanıp sönen)
         if (t // 8) % 2 == 0:
-            font = pygame.font.SysFont("segoeui", 52, bold=True)
+            font = get_sys_font(52, bold=True)
             txt  = font.render(T("boss_fight"), True, (255, 60, 80))
             txt.set_alpha(alpha)
             surf.blit(txt, txt.get_rect(center=(SCREEN_W//2, SCREEN_H//2)))
