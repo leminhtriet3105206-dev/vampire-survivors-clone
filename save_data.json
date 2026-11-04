@@ -1,0 +1,39 @@
+{
+  "total_gold": 55617,
+  "lifetime_gold": 63217,
+  "unlocked_ids": [
+    "mage",
+    "paladin",
+    "rogue",
+    "warrior"
+  ],
+  "selected_id": "warrior",
+  "owned_skins": [
+    "default",
+    "gojo",
+    "luffy",
+    "naruto",
+    "saiyan"
+  ],
+  "equipped_skin": "luffy",
+  "campaign_unlocked_level": 2,
+  "chest_opens": 8,
+  "unlocked_achievements": [
+    "MONSTER_SLAYER",
+    "BOSS_HUNTER",
+    "RICH",
+    "FIRST_BLOOD"
+  ],
+  "perm_upgrades": {
+    "hp": 5,
+    "dmg": 5,
+    "spd": 5,
+    "gold": 5
+  },
+  "high_scores": {
+    "best_kills": 21066,
+    "best_time": 423,
+    "best_wave": 17,
+    "best_level": 34
+  }
+}
