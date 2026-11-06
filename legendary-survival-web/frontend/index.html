@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legendary Survival - Login</title>
+  <meta name="description" content="Legendary Survival - sign in or create your survivor account." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body class="auth-page">
+  <div class="bg-orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <main class="auth-shell">
+    <section class="auth-hero">
+      <h1 class="logo">
+        <span class="logo-top">LEGENDARY</span>
+        <span class="logo-bottom">SURVIVAL</span>
+      </h1>
+      <p class="tagline">Collect anime-inspired legends, earn treasure, and chat with survivors worldwide.</p>
+      <ul class="feature-list">
+        <li><span class="cur-icon cur-gold"></span>Earn Gold, Diamonds &amp; Rubies</li>
+        <li><span class="cur-icon cur-diamond"></span>Unlock legendary anime skins</li>
+        <li><span class="cur-icon cur-ruby"></span>Real-time World Chat</li>
+      </ul>
+    </section>
+
+    <section class="auth-card" aria-label="Account">
+      <div class="tabs" role="tablist">
+        <button class="tab active" type="button" role="tab" data-tab="login" aria-selected="true">Login</button>
+        <button class="tab" type="button" role="tab" data-tab="register" aria-selected="false">Register</button>
+      </div>
+
+      <!-- LOGIN -->
+      <form id="login-form" class="auth-form" novalidate>
+        <div class="field">
+          <label for="login-identifier">Username or email</label>
+          <input id="login-identifier" name="identifier" type="text" autocomplete="username" maxlength="254" required />
+          <small class="field-error" data-error-for="identifier"></small>
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <div class="input-with-action">
+            <input id="login-password" name="password" type="password" autocomplete="current-password" maxlength="72" required />
+            <button type="button" class="input-action" data-toggle-password="login-password">Show</button>
+          </div>
+          <small class="field-error" data-error-for="password"></small>
+        </div>
+        <p class="form-error" role="alert"></p>
+        <button class="btn btn-primary btn-block" type="submit">Enter the World</button>
+      </form>
+
+      <!-- REGISTER -->
+      <form id="register-form" class="auth-form hidden" novalidate>
+        <div class="field">
+          <label for="reg-username">Username</label>
+          <input id="reg-username" name="username" type="text" autocomplete="username" minlength="3" maxlength="20" required />
+          <small class="hint">3-20 characters: letters, numbers, underscore</small>
+          <small class="field-error" data-error-for="username"></small>
+        </div>
+        <div class="field">
+          <label for="reg-email">Email</label>
+          <input id="reg-email" name="email" type="email" autocomplete="email" maxlength="254" required />
+          <small class="field-error" data-error-for="email"></small>
+        </div>
+        <div class="field">
+          <label for="reg-password">Password</label>
+          <div class="input-with-action">
+            <input id="reg-password" name="password" type="password" autocomplete="new-password" minlength="8" maxlength="72" required />
+            <button type="button" class="input-action" data-toggle-password="reg-password">Show</button>
+          </div>
+          <small class="hint">At least 8 characters with a letter and a number</small>
+          <small class="field-error" data-error-for="password"></small>
+        </div>
+        <div class="field">
+          <label for="reg-confirm">Confirm password</label>
+          <input id="reg-confirm" name="confirmPassword" type="password" autocomplete="new-password" maxlength="72" required />
+          <small class="field-error" data-error-for="confirmPassword"></small>
+        </div>
+        <p class="form-error" role="alert"></p>
+        <button class="btn btn-primary btn-block" type="submit">Create Account</button>
+      </form>
+    </section>
+  </main>
+
+  <script type="module" src="js/auth.js"></script>
+</body>
+</html>
+

@@ -1,13 +1,15 @@
 {
-  "total_gold": 55617,
-  "lifetime_gold": 63217,
+  "total_gold": 91930,
+  "lifetime_gold": 188350,
   "unlocked_ids": [
+    "dragon_lancer",
     "mage",
+    "necromancer",
     "paladin",
     "rogue",
     "warrior"
   ],
-  "selected_id": "warrior",
+  "selected_id": "mage",
   "owned_skins": [
     "default",
     "gojo",
@@ -15,14 +17,15 @@
     "naruto",
     "saiyan"
   ],
-  "equipped_skin": "luffy",
-  "campaign_unlocked_level": 2,
-  "chest_opens": 8,
+  "equipped_skin": "default",
+  "campaign_unlocked_level": 3,
+  "chest_opens": 14,
   "unlocked_achievements": [
     "MONSTER_SLAYER",
     "BOSS_HUNTER",
-    "RICH",
-    "FIRST_BLOOD"
+    "FIRST_BLOOD",
+    "TREASURE_SEEKER",
+    "RICH"
   ],
   "perm_upgrades": {
     "hp": 5,
@@ -31,9 +34,34 @@
     "gold": 5
   },
   "high_scores": {
-    "best_kills": 21066,
-    "best_time": 423,
-    "best_wave": 17,
-    "best_level": 34
+    "best_kills": 34139,
+    "best_time": 542,
+    "best_wave": 22,
+    "best_level": 36
+  },
+  "class_perks": {
+    "warrior": "cuong_huyet",
+    "mage": "hu_khong_rong",
+    "rogue": "am_bo_than_toc",
+    "paladin": "thanh_quang_ho_the",
+    "necromancer": "bat_hon_doat_menh",
+    "dragon_lancer": "no_long_xuat_the"
+  },
+  "unlocked_perks": [
+    "am_bo_than_toc",
+    "bat_hon_doat_menh",
+    "cuong_huyet",
+    "hu_khong_rong",
+    "khai_phong_tinh_van",
+    "no_long_xuat_the",
+    "thanh_quang_ho_the",
+    "thoi_gian_gian_no"
+  ],
+  "consumables": {
+    "potion_hp": 54,
+    "potion_dmg": 3,
+    "potion_spd": 9,
+    "potion_armor": 10,
+    "potion_magnet": 10
   }
 }

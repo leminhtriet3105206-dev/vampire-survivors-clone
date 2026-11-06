@@ -1,0 +1,61 @@
+{
+  "total_gold": 22669,
+  "lifetime_gold": 30269,
+  "unlocked_ids": [
+    "dragon_lancer",
+    "rogue",
+    "warrior"
+  ],
+  "selected_id": "dragon_lancer",
+  "owned_skins": [
+    "default",
+    "gojo",
+    "luffy",
+    "naruto",
+    "saiyan"
+  ],
+  "equipped_skin": "default",
+  "campaign_unlocked_level": 1,
+  "chest_opens": 1,
+  "unlocked_achievements": [
+    "MONSTER_SLAYER",
+    "BOSS_HUNTER",
+    "RICH",
+    "FIRST_BLOOD"
+  ],
+  "perm_upgrades": {
+    "hp": 5,
+    "dmg": 5,
+    "spd": 5,
+    "gold": 5
+  },
+  "high_scores": {
+    "best_kills": 22021,
+    "best_time": 383,
+    "best_wave": 16,
+    "best_level": 34
+  },
+  "class_perks": {
+    "warrior": "cuong_huyet",
+    "mage": "hu_khong_rong",
+    "rogue": "am_bo_than_toc",
+    "paladin": "thanh_quang_ho_the",
+    "necromancer": "bat_hon_doat_menh",
+    "dragon_lancer": "no_long_xuat_the"
+  },
+  "unlocked_perks": [
+    "am_bo_than_toc",
+    "bat_hon_doat_menh",
+    "cuong_huyet",
+    "hu_khong_rong",
+    "no_long_xuat_the",
+    "thanh_quang_ho_the"
+  ],
+  "consumables": {
+    "potion_hp": 0,
+    "potion_dmg": 0,
+    "potion_spd": 0,
+    "potion_armor": 0,
+    "potion_magnet": 0
+  }
+}

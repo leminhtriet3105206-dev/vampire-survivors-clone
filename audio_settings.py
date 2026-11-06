@@ -54,6 +54,8 @@ def default_settings_path() -> str:
     override = os.environ.get(ENV_PATH)
     if override:
         return override
+    if sys.platform == "emscripten":
+        return "/tmp/settings.json"
     if sys.platform == "win32":
         base = os.environ.get("APPDATA") or os.path.expanduser("~")
     elif sys.platform == "darwin":

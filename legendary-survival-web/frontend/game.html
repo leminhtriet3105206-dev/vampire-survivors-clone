@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Legendary Survival - Hub</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/game.css" />
+</head>
+<body class="game-page booting">
+  <div class="bg-orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <!-- ── Top bar: logo, currencies, account ── -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">LS</span>
+      <span class="brand-name">Legendary Survival</span>
+    </div>
+
+    <div class="currency-bar" aria-label="Your currencies">
+      <div class="currency" title="Gold">
+        <span class="cur-icon cur-gold"></span>
+        <span class="cur-label">Gold</span>
+        <strong data-currency="gold">0</strong>
+      </div>
+      <div class="currency" title="Diamonds">
+        <span class="cur-icon cur-diamond"></span>
+        <span class="cur-label">Diamonds</span>
+        <strong data-currency="diamonds">0</strong>
+      </div>
+      <div class="currency" title="Rubies">
+        <span class="cur-icon cur-ruby"></span>
+        <span class="cur-label">Rubies</span>
+        <strong data-currency="rubies">0</strong>
+      </div>
+    </div>
+
+    <div class="account">
+      <button id="admin-panel-btn" class="btn btn-gm hidden" type="button" title="Game Master Control Panel">👑 GM PANEL</button>
+      <button id="daily-btn" class="btn btn-daily" type="button">Daily Reward</button>
+      <span class="account-name" id="header-username"></span>
+      <span id="header-rank-badge" class="header-rank"></span>
+      <button id="logout-btn" class="btn btn-ghost" type="button">Logout</button>
+    </div>
+  </header>
+
+  <div class="hub-app-layout">
+    <!-- ── Left Sidebar Navigation ── -->
+    <aside class="hub-sidebar" aria-label="Main Navigation">
+      <div class="sidebar-brand">
+        <span class="sidebar-brand-mark">LS</span>
+        <div class="sidebar-brand-text">
+          <span class="sidebar-title">LEGENDARY</span>
+          <span class="sidebar-sub">SURVIVAL</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" role="tablist">
+        <button class="nav-tab-btn active" type="button" data-tab="home" role="tab" aria-selected="true">
+          <span class="nav-tab-icon">🏠</span>
+          <span class="nav-tab-label">Trang Chủ</span>
+        </button>
+        <button class="nav-tab-btn" type="button" data-tab="shop" role="tab" aria-selected="false">
+          <span class="nav-tab-icon">🛒</span>
+          <span class="nav-tab-label">Cửa Hàng</span>
+        </button>
+        <button class="nav-tab-btn" type="button" data-tab="profile" role="tab" aria-selected="false">
+          <span class="nav-tab-icon">👤</span>
+          <span class="nav-tab-label">Hồ Sơ</span>
+        </button>
+        <button class="nav-tab-btn" type="button" data-tab="leaderboard" role="tab" aria-selected="false">
+          <span class="nav-tab-icon">🏆</span>
+          <span class="nav-tab-label">Xếp Hạng</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="gm-hub-btn" class="btn btn-gm-hub hidden" type="button">
+          <span class="battle-btn-icon">👑</span>
+          <span class="battle-btn-text">GM CONTROL PANEL</span>
+        </button>
+        <div class="sidebar-user-brief">
+          <span class="sidebar-user-name" id="sidebar-username">Survivor</span>
+          <span class="sidebar-user-rank" id="sidebar-rank">Bronze</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main Content Area (Tabbed Views) ── -->
+    <main class="hub-main-content">
+      <!-- ── TAB 1: HOME ── -->
+      <section id="tab-home" class="tab-view active" aria-label="Home">
+        <div class="home-layout">
+          <!-- Left Column: Hero Banner + Survivor Showcase -->
+          <div class="home-primary">
+            <!-- Hero Battlefield Banner -->
+            <div class="hero-battle-banner">
+              <div class="hero-banner-content">
+                <span class="hero-tag">⚡ DARK FANTASY SURVIVAL</span>
+                <h1 class="hero-title">THE LEGION AWAITS</h1>
+                <p class="hero-desc">Slay endless hordes, forge lethal synergies, defeat ancient bosses with allies, and compete in 3v3 ranked score races.</p>
+                <div class="hero-mode-cards">
+                  <div class="hero-mode-card" id="card-mode-solo">
+                    <div class="hero-mode-icon">⚔️</div>
+                    <div class="hero-mode-info">
+                      <h3>SOLO SURVIVAL</h3>
+                      <p>Survive endless waves &amp; bank gold</p>
+                    </div>
+                    <button id="enter-battle-btn" class="btn btn-battle" type="button">PLAY SOLO</button>
+                  </div>
+                  <div class="hero-mode-card" id="card-mode-coop">
+                    <div class="hero-mode-icon">🤝</div>
+                    <div class="hero-mode-info">
+                      <h3>CO-OP DUNGEON</h3>
+                      <p>2-4 Players vs Lich King for Diamonds</p>
+                    </div>
+                    <button id="coop-dungeon-btn" class="btn btn-coop" type="button">ENTER CO-OP</button>
+                  </div>
+                  <div class="hero-mode-card" id="card-mode-ranked">
+                    <div class="hero-mode-icon">🏆</div>
+                    <div class="hero-mode-info">
+                      <h3>RANKED 3v3</h3>
+                      <p>Competitive PvE Race for Rubies &amp; ELO</p>
+                    </div>
+                    <button id="ranked-3v3-btn" class="btn btn-ranked" type="button">FIND MATCH</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active Survivor Card -->
+            <div class="active-survivor-card panel">
+              <div class="active-survivor-header">
+                <h2 class="panel-title">Active Survivor</h2>
+                <button class="btn btn-sm btn-secondary" type="button" data-switch-tab="shop">Change Skin ➔</button>
+              </div>
+              <div class="active-survivor-body">
+                <div class="profile-stage" id="profile-avatar"></div>
+                <div class="active-survivor-details">
+                  <h3 class="profile-name" id="profile-name"></h3>
+                  <div id="profile-rank-badge" class="profile-rank-badge-box"></div>
+                  <p class="profile-skin">
+                    <span id="profile-skin"></span>
+                    <span id="profile-rarity" class="rarity-badge"></span>
+                  </p>
+                  <!-- Signature Skill Box (48x48 Metallic Icon) -->
+                  <div id="profile-skill-box" class="profile-skill-box"></div>
+                  <dl class="profile-stats">
+                    <div><dt>Skins owned</dt><dd id="profile-owned">0</dd></div>
+                    <div><dt>Survivor since</dt><dd id="profile-since">-</dd></div>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: World Chat -->
+          <div class="home-secondary">
+            <section class="panel chat-panel" aria-label="World chat">
+              <div class="panel-head">
+                <h2 class="panel-title">World Chat</h2>
+                <div class="chat-head-info">
+                  <span id="chat-online" class="muted small">0 online</span>
+                  <span id="chat-status" class="chat-status status-connecting">Connecting...</span>
+                </div>
+              </div>
+              <ul class="chat-list" id="chat-list" aria-live="polite"></ul>
+              <form class="chat-form" id="chat-form" autocomplete="off">
+                <input id="chat-input" type="text" placeholder="Say something to the world..." maxlength="300" disabled aria-label="Chat message" />
+                <button id="chat-send" class="btn btn-primary" type="submit" disabled>Send</button>
+              </form>
+              <small id="chat-counter" class="chat-counter">0/300</small>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 2: SHOP ── -->
+      <section id="tab-shop" class="tab-view hidden" aria-label="Anime skin shop">
+        <div class="panel shop-panel-full">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title gold-title">Anime Skin Shop</h2>
+              <p class="muted small">Unlock legendary warriors with unique signature abilities and combat arts.</p>
+            </div>
+            <span class="shop-owned-counter" id="shop-owned-count"></span>
+          </div>
+          <div class="filters">
+            <div class="filter-group" role="group" aria-label="Filter by currency">
+              <button class="chip active" type="button" data-filter="currency" data-value="all">All</button>
+              <button class="chip" type="button" data-filter="currency" data-value="gold"><span class="cur-icon cur-gold sm"></span>Gold</button>
+              <button class="chip" type="button" data-filter="currency" data-value="diamonds"><span class="cur-icon cur-diamond sm"></span>Diamonds</button>
+              <button class="chip" type="button" data-filter="currency" data-value="rubies"><span class="cur-icon cur-ruby sm"></span>Rubies</button>
+            </div>
+            <div class="filter-group" role="group" aria-label="Filter by ownership">
+              <button class="chip active" type="button" data-filter="ownership" data-value="all">Any</button>
+              <button class="chip" type="button" data-filter="ownership" data-value="owned">Owned</button>
+              <button class="chip" type="button" data-filter="ownership" data-value="locked">Locked</button>
+            </div>
+          </div>
+          <div class="skin-grid" id="skin-grid">
+            <p class="empty-state">Loading skins...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 3: PROFILE & MATCH HISTORY ── -->
+      <section id="tab-profile" class="tab-view hidden" aria-label="Player profile and combat history">
+        <div class="profile-view-layout">
+          <!-- Top Card: Summary & Stats -->
+          <div class="panel profile-summary-card">
+            <div class="profile-header-flex">
+              <div class="profile-big-avatar" id="profile-full-avatar"></div>
+              <div class="profile-info-block">
+                <div class="profile-title-row">
+                  <h2 class="gold-title" id="profile-full-username">Survivor</h2>
+                  <div id="profile-full-rank-badge"></div>
+                </div>
+                <p class="profile-meta-text">
+                  Equipped Skin: <strong id="profile-full-skin">Default</strong> •
+                  Role: <span id="profile-full-role" class="user-role-tag">Player</span>
+                </p>
+                <!-- Currencies summary pills -->
+                <div class="profile-currency-pills">
+                  <span class="cur-pill"><span class="cur-icon cur-gold sm"></span> <strong data-currency="gold">0</strong> Gold</span>
+                  <span class="cur-pill"><span class="cur-icon cur-diamond sm"></span> <strong data-currency="diamonds">0</strong> Diamonds</span>
+                  <span class="cur-pill"><span class="cur-icon cur-ruby sm"></span> <strong data-currency="rubies">0</strong> Rubies</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-overview-grid">
+              <div class="stat-card">
+                <span class="stat-icon">💀</span>
+                <span class="stat-value" id="stat-total-kills">0</span>
+                <span class="stat-label">Total Kills</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-icon">🎯</span>
+                <span class="stat-value" id="stat-win-rate">0%</span>
+                <span class="stat-label">Win Rate</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-icon">👑</span>
+                <span class="stat-value" id="stat-bosses-defeated">0</span>
+                <span class="stat-label">Bosses Slain</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-icon">⏱️</span>
+                <span class="stat-value" id="stat-playtime">0m</span>
+                <span class="stat-label">Total Playtime</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-icon">⚔️</span>
+                <span class="stat-value" id="stat-total-matches">0</span>
+                <span class="stat-label">Total Matches</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Card: Recent Matches History Table -->
+          <div class="panel match-history-card">
+            <div class="panel-head">
+              <h2 class="panel-title gold-title">Recent Matches</h2>
+              <button id="btn-refresh-history" class="btn btn-sm btn-secondary" type="button">🔄 Refresh</button>
+            </div>
+            <div class="table-scroll-wrapper">
+              <table class="match-history-table">
+                <thead>
+                  <tr>
+                    <th>Mode</th>
+                    <th>Result</th>
+                    <th>Score / Kills</th>
+                    <th>Survival Time</th>
+                    <th>Skin</th>
+                    <th>Rewards</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="match-history-tbody">
+                  <tr><td colspan="7" class="text-center muted" style="padding: 2.5rem 1rem;">Loading match history...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── TAB 4: LEADERBOARD ── -->
+      <section id="tab-leaderboard" class="tab-view hidden" aria-label="Leaderboard">
+        <div class="panel leaderboard-card">
+          <div class="panel-head">
+            <div>
+              <h2 class="panel-title gold-title">Survivor Hall of Fame</h2>
+              <p class="muted small">Top combatants ranked across all modes by Rank Points (ELO), Rubies, and slayers.</p>
+            </div>
+            <button id="btn-refresh-leaderboard" class="btn btn-sm btn-secondary" type="button">🔄 Refresh</button>
+          </div>
+
+          <!-- Top 3 Podium Highlights -->
+          <div class="leaderboard-podium" id="leaderboard-podium">
+            <!-- Dynamically populated by leaderboard.js -->
+          </div>
+
+          <!-- Leaderboard Table -->
+          <div class="table-scroll-wrapper">
+            <table class="leaderboard-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Survivor</th>
+                  <th>Tier &amp; RP</th>
+                  <th>Rubies</th>
+                  <th>Diamonds</th>
+                  <th>Gold</th>
+                  <th>Total Kills</th>
+                  <th>Win Rate</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-tbody">
+                <tr><td colspan="8" class="text-center muted" style="padding: 2.5rem 1rem;">Loading leaderboard...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ── Co-op Entry Modal (Create / Join) ── -->
+  <div id="coop-entry-modal" class="game-modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Co-op Dungeon">
+    <div class="game-modal coop-modal">
+      <h2 class="game-modal-title">🤝 CO-OP DUNGEON</h2>
+      <p class="muted">Team up with 2-4 players, defeat 100 monsters to summon the Lich King Boss, and earn <strong>+15 Diamonds</strong>!</p>
+
+      <div class="coop-entry-grid">
+        <div class="coop-entry-card">
+          <div class="coop-card-icon">🏰</div>
+          <h3>Host Dungeon</h3>
+          <p class="muted small">Create a private party room and invite friends with a 5-letter code.</p>
+          <button id="btn-create-room" class="btn btn-primary btn-block" type="button">Create Room</button>
+        </div>
+
+        <div class="coop-entry-card">
+          <div class="coop-card-icon">🔑</div>
+          <h3>Join Party</h3>
+          <p class="muted small">Enter the 5-letter room code shared by your dungeon host.</p>
+          <div class="join-input-group">
+            <input id="join-room-code" type="text" placeholder="CODE (e.g. X7B9Q)" maxlength="5" autocomplete="off" spellcheck="false" aria-label="Room Code" />
+            <button id="btn-join-room" class="btn btn-secondary" type="button">Join</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="coop-entry-error" class="error-banner hidden" role="alert"></div>
+
+      <div class="game-modal-actions">
+        <button id="btn-close-coop-entry" class="btn btn-ghost" type="button">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Co-op Room Lobby Modal ── -->
+  <div id="coop-lobby-modal" class="game-modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Dungeon Lobby">
+    <div class="game-modal coop-lobby-modal">
+      <div class="lobby-header">
+        <div>
+          <h2 class="game-modal-title">⚔️ DUNGEON LOBBY</h2>
+          <p class="muted small">Party size: <span id="lobby-player-count">1</span> / 4 Survivors</p>
+        </div>
+        <div class="room-code-badge">
+          <span class="room-code-label">ROOM CODE</span>
+          <strong id="room-code-display" class="room-code-value">-----</strong>
+          <button id="btn-copy-code" class="btn btn-sm btn-ghost" type="button" title="Copy code">📋 Copy</button>
+        </div>
+      </div>
+
+      <!-- 4 Player Slots Grid -->
+      <div class="room-players-grid" id="room-players-grid">
+        <!-- Rendered dynamically by multiplayer.js -->
+      </div>
+
+      <p id="room-lobby-status" class="lobby-status-text">Waiting for all players to be Ready...</p>
+      <div id="room-lobby-error" class="error-banner hidden" role="alert"></div>
+
+      <div class="lobby-actions">
+        <button id="btn-toggle-ready" class="btn btn-secondary" type="button">Mark Ready</button>
+        <button id="btn-start-dungeon" class="btn btn-battle hidden" type="button" disabled>START DUNGEON</button>
+        <button id="btn-leave-room" class="btn btn-ghost" type="button">Leave Party</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Phase 4: 3v3 Ranked Matchmaking Queue Modal ── -->
+  <div id="ranked-queue-modal" class="game-modal-overlay hidden" role="dialog" aria-modal="true" aria-label="3v3 Ranked Matchmaking">
+    <div class="game-modal ranked-queue-modal">
+      <div class="ranked-modal-badge">🏆 3v3 PVE SCORE RACE</div>
+      <h2 class="game-modal-title gold-title">MATCHMAKING</h2>
+      
+      <div class="matchmaking-radar">
+        <div class="radar-circle circle-1"></div>
+        <div class="radar-circle circle-2"></div>
+        <div class="radar-circle circle-3"></div>
+        <div class="radar-sword">⚔️</div>
+      </div>
+
+      <p class="ranked-queue-time" id="ranked-queue-timer">Searching: 00:00</p>
+      
+      <div class="queue-status-box">
+        <span class="queue-status-label">PLAYERS IN QUEUE</span>
+        <span id="ranked-queue-count" class="queue-status-count">1 / 6</span>
+        <div class="bar-container queue-bar-container">
+          <div id="ranked-queue-fill" class="bar-fill queue-bar-fill" style="width: 16.6%;"></div>
+        </div>
+      </div>
+
+      <p class="muted small">3v3 PvE Race (180s): Normal kill +10 pts, Elite kill +100 pts, Boss kill +1000 pts! Win gives <strong>+25 RP &amp; +5 Rubies</strong>.</p>
+      
+      <div class="game-modal-actions">
+        <button id="btn-fill-queue-bots" class="btn btn-secondary" type="button" title="Fill remaining slots with bots for immediate testing">⚡ Fill AI Competitors &amp; Start</button>
+        <button id="btn-cancel-queue" class="btn btn-ghost" type="button">Cancel Matchmaking</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── In-Game GM Control Panel Modal (RBAC Admin) ── -->
+  <div id="gm-control-modal" class="game-modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Game Master Control Panel">
+    <div class="game-modal gm-modal">
+      <div class="gm-modal-header">
+        <div class="gm-header-title-box">
+          <span class="gm-badge">👑 GAME MASTER</span>
+          <h2 class="game-modal-title gold-title">GM CONTROL PANEL</h2>
+          <p class="muted small">Role-Based Access Control • Server Management &amp; Player Power Calibration</p>
+        </div>
+        <button id="btn-close-gm-modal" class="btn btn-sm btn-ghost gm-close-btn" type="button" aria-label="Close GM Panel">✕</button>
+      </div>
+
+      <!-- GM Navigation Tabs -->
+      <div class="gm-tabs" role="tablist">
+        <button id="gm-tab-btn-currency" class="gm-tab-btn active" type="button" data-gm-tab="currency">
+          💰 Add Currency
+        </button>
+        <button id="gm-tab-btn-power" class="gm-tab-btn" type="button" data-gm-tab="power">
+          ⚡ Modify Power
+        </button>
+        <button id="gm-tab-btn-roster" class="gm-tab-btn" type="button" data-gm-tab="roster">
+          👥 Player Roster (<span id="gm-user-count">0</span>)
+        </button>
+      </div>
+
+      <!-- Tab 1: Add Currency -->
+      <div id="gm-panel-currency" class="gm-tab-content">
+        <form id="gm-currency-form" class="gm-form" autocomplete="off">
+          <div class="gm-form-group">
+            <label for="gm-currency-target">Target Player:</label>
+            <div class="gm-input-row">
+              <select id="gm-currency-user-select" class="gm-select" aria-label="Select Registered User">
+                <option value="">-- Choose User from Roster --</option>
+              </select>
+              <input id="gm-currency-target" class="gm-input" type="text" placeholder="Or type username..." required />
+            </div>
+          </div>
+
+          <div class="gm-form-group">
+            <label for="gm-currency-type">Currency Type:</label>
+            <select id="gm-currency-type" class="gm-select">
+              <option value="gold">🪙 Gold</option>
+              <option value="diamonds">💎 Diamonds</option>
+              <option value="rubies">🔻 Rubies</option>
+            </select>
+          </div>
+
+          <div class="gm-form-group">
+            <label for="gm-currency-amount">Amount (Positive to add, Negative to deduct):</label>
+            <input id="gm-currency-amount" class="gm-input" type="number" value="5000" step="1" required />
+            <div class="gm-chip-row">
+              <button type="button" class="gm-chip" data-amt="1000">+1,000</button>
+              <button type="button" class="gm-chip" data-amt="5000">+5,000</button>
+              <button type="button" class="gm-chip" data-amt="50000">+50,000</button>
+              <button type="button" class="gm-chip" data-amt="100" data-curr="diamonds">+100 💎</button>
+              <button type="button" class="gm-chip" data-amt="50" data-curr="rubies">+50 🔻</button>
+              <button type="button" class="gm-chip danger" data-amt="-1000">-1,000</button>
+            </div>
+          </div>
+
+          <div id="gm-currency-status" class="gm-status-banner hidden"></div>
+
+          <div class="game-modal-actions">
+            <button id="btn-exec-currency" class="btn btn-primary" type="submit">⚡ Execute Currency Adjustment</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Tab 2: Modify Power Buffs -->
+      <div id="gm-panel-power" class="gm-tab-content hidden">
+        <form id="gm-power-form" class="gm-form" autocomplete="off">
+          <div class="gm-form-group">
+            <label for="gm-power-target">Target Player:</label>
+            <div class="gm-input-row">
+              <select id="gm-power-user-select" class="gm-select" aria-label="Select Registered User">
+                <option value="">-- Choose User from Roster --</option>
+              </select>
+              <input id="gm-power-target" class="gm-input" type="text" placeholder="Or type username..." required />
+            </div>
+          </div>
+
+          <div class="gm-stats-grid">
+            <div class="gm-form-group">
+              <label for="gm-power-hp">Bonus Max HP:</label>
+              <input id="gm-power-hp" class="gm-input" type="number" min="0" value="200" step="10" required />
+              <small class="muted">Adds directly to in-game Health Pool</small>
+            </div>
+            <div class="gm-form-group">
+              <label for="gm-power-dmg">Bonus Projectile Damage:</label>
+              <input id="gm-power-dmg" class="gm-input" type="number" min="0" value="50" step="5" required />
+              <small class="muted">Adds directly to weapon projectile damage</small>
+            </div>
+          </div>
+
+          <div class="gm-chip-row">
+            <button type="button" class="gm-chip" data-preset="hero">🛡️ Hero Buff (+200 HP, +50 DMG)</button>
+            <button type="button" class="gm-chip" data-preset="god">⚡ God Mode (+5000 HP, +500 DMG)</button>
+            <button type="button" class="gm-chip danger" data-preset="reset">🔄 Reset Buffs (0 / 0)</button>
+          </div>
+
+          <div id="gm-power-status" class="gm-status-banner hidden"></div>
+
+          <div class="game-modal-actions">
+            <button id="btn-exec-power" class="btn btn-primary" type="submit">⚡ Apply Power Buffs</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Tab 3: Player Roster -->
+      <div id="gm-panel-roster" class="gm-tab-content hidden">
+        <div class="gm-roster-head">
+          <span class="muted small">Click "Select" on any user to load them into the Currency or Power tools.</span>
+          <button id="btn-refresh-roster" class="btn btn-sm btn-secondary" type="button">🔄 Refresh Roster</button>
+        </div>
+        <div class="gm-roster-table-wrapper">
+          <table class="gm-roster-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Gold</th>
+                <th>Diamonds</th>
+                <th>Rubies</th>
+                <th>Buffs</th>
+                <th>Rank</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="gm-roster-tbody">
+              <tr><td colspan="8" class="text-center muted">Loading player roster...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Pygame WebAssembly Modal Container (Pygbag / Emscripten) ── -->
+  <div id="pygame-container" class="pygame-container hidden" aria-label="Python WebAssembly Game Session">
+    <div class="pygame-top-bar">
+      <div class="pygame-brand">
+        <span class="pygame-icon">⚔️</span>
+        <span class="pygame-title">LEGENDARY SURVIVAL &bull; PYTHON WEBASSEMBLY</span>
+        <span class="pygame-badge">ORIGINAL PYGAME-CE ENGINE</span>
+      </div>
+      <button id="btn-pygame-return-hub" class="btn btn-pygame-return" type="button" title="Save session and return to Web Hub">
+        ◀ RETURN TO HUB
+      </button>
+    </div>
+    <div class="pygame-frame-wrapper">
+      <iframe
+        id="pygameFrame"
+        class="pygame-frame"
+        src="about:blank"
+        allow="autoplay; fullscreen; gamepad"
+        tabindex="0"
+        title="Legendary Survival Pygame Session"
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- ── 2D Top-Down Canvas Game Container (Phase 2, 3 & 4) ── -->
+  <div id="game-container" class="game-container hidden" aria-label="Battlefield">
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- In-Game HUD -->
+    <div class="ingame-hud">
+      <div class="hud-top">
+        <div class="hud-left">
+          <div class="hud-stat-box">
+            <span class="hud-level-badge" id="hud-level">LV 1</span>
+            <div class="bar-container hp-bar-container">
+              <div class="bar-fill hp-bar-fill" id="hud-hp-bar" style="width: 100%;"></div>
+              <span class="bar-text" id="hud-hp-text">100 / 100</span>
+            </div>
+          </div>
+          <div class="bar-container exp-bar-container">
+            <div class="bar-fill exp-bar-fill" id="hud-exp-bar" style="width: 0%;"></div>
+            <span class="bar-text" id="hud-exp-text">EXP: 0 / 20 (0%)</span>
+          </div>
+        </div>
+
+        <!-- Crisp Wave / Round & Quota Indicator (Ported 1:1 from Pygame) -->
+        <div class="hud-round-card" id="hud-round-card">
+          <span class="round-badge" id="hud-round-badge">HIỆP 1</span>
+          <span class="round-quota" id="hud-round-quota">Quái còn lại: 25 / 25</span>
+        </div>
+
+        <!-- 3v3 Live Scoreboard (Phase 4 Ranked) -->
+        <div id="hud-ranked-scoreboard" class="hud-ranked-scoreboard hidden">
+          <div class="team-score-card team-red">
+            <span class="team-tag-pill red">RED</span>
+            <strong id="hud-red-score" class="score-num">0</strong>
+          </div>
+          <div class="ranked-timer-card">
+            <span class="timer-title">TIME</span>
+            <strong id="hud-ranked-timer" class="timer-num">03:00</strong>
+          </div>
+          <div class="team-score-card team-blue">
+            <strong id="hud-blue-score" class="score-num">0</strong>
+            <span class="team-tag-pill blue">BLUE</span>
+          </div>
+        </div>
+
+        <div class="hud-center">
+          <div class="hud-timer" id="hud-timer">00:00</div>
+          <div class="hud-kills"><span class="hud-icon">💀</span><span id="hud-kills">0</span></div>
+        </div>
+
+        <div class="hud-right">
+          <div class="hud-gold"><span class="cur-icon cur-gold"></span><span id="hud-gold">0</span></div>
+          <button id="hud-pause-btn" class="btn btn-hud" type="button" title="Tạm Dừng [ESC]">TẠM DỪNG</button>
+        </div>
+      </div>
+
+      <!-- Co-op Shared Quest Progress Bar (Phase 3) -->
+      <div id="hud-coop-quest" class="hud-coop-quest hidden">
+        <div class="quest-row">
+          <span class="quest-title">👑 DUNGEON OBJECTIVE:</span>
+          <span id="coop-quest-text" class="quest-status">Slay Monsters: 0 / 100</span>
+        </div>
+        <div class="bar-container quest-bar-container">
+          <div id="coop-quest-fill" class="bar-fill quest-bar-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <!-- Boss Warning Alert Banner -->
+      <div id="hud-boss-alert" class="hud-boss-alert hidden">
+        <span class="boss-alert-icon">⚠️</span>
+        <span class="boss-alert-text">CẢNH BÁO: ĐẠI TRÙM XUẤT HIỆN!</span>
+        <span class="boss-alert-icon">⚠️</span>
+      </div>
+
+      <!-- Round Clear Victory Banner -->
+      <div id="hud-round-clear" class="hud-round-clear hidden">
+        <span class="round-clear-title">🎉 HOÀN THÀNH HIỆP!</span>
+        <span id="hud-round-clear-sub" class="round-clear-sub">Tất cả quái và Trùm đã bị tiêu diệt! +100 Vàng</span>
+      </div>
+
+      <!-- Co-op / Round Boss Bar (Phase 2, 3 & 4) -->
+      <div id="hud-boss-bar-container" class="hud-boss-bar-container hidden">
+        <div class="boss-info">
+          <span class="boss-icon" id="hud-boss-icon">💀</span>
+          <span class="boss-name" id="hud-boss-name">CHÚA TỂ XƯƠNG &bull; LICH KING</span>
+          <span id="hud-boss-hp-text" class="boss-hp-text">1800 / 1800</span>
+        </div>
+        <div class="bar-container boss-bar-container">
+          <div id="hud-boss-hp-bar" class="bar-fill boss-bar-fill" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Level Up Notification Banner -->
+      <div id="hud-levelup-banner" class="hud-levelup-banner hidden">
+        <span class="lvlup-title">⚡ THỨC TỈNH SỨC MẠNH! ⚡</span>
+        <span class="lvlup-sub" id="hud-levelup-text">Lên cấp! Chọn bí kíp cổ ngữ để cường hóa!</span>
+      </div>
+
+      <!-- Bottom In-Game Controls & Skill Bar HUD -->
+      <div class="hud-bottom-bar">
+        <!-- Equipped Skills Quick Bar showing custom SVG icons and Awakening status -->
+        <div id="hud-skill-bar" class="hud-skill-bar"></div>
+
+        <!-- In-Game Interactive Emojis (Phase 4) -->
+        <div id="hud-emoji-bar" class="hud-emoji-bar">
+          <span class="emoji-bar-label">EMOJI [1-5]:</span>
+          <button class="emoji-quick-btn" type="button" data-emoji="😡"><span class="key-tag">1</span> 😡</button>
+          <button class="emoji-quick-btn" type="button" data-emoji="😭"><span class="key-tag">2</span> 😭</button>
+          <button class="emoji-quick-btn" type="button" data-emoji="💀"><span class="key-tag">3</span> 💀</button>
+          <button class="emoji-quick-btn" type="button" data-emoji="❤️"><span class="key-tag">4</span> ❤️</button>
+          <button class="emoji-quick-btn" type="button" data-emoji="🤡"><span class="key-tag">5</span> 🤡</button>
+        </div>
+
+        <!-- Controls Hint -->
+        <div class="hud-controls-hint">
+          <span>[WASD / Arrows]: Move</span>
+          <span>•</span>
+          <span>Auto-Aim Active</span>
+          <span>•</span>
+          <span>[1-5]: Taunt Emojis</span>
+          <span>•</span>
+          <span>[ESC]: Pause</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Level-Up Modal Overlay (Authentic Survivor Ascension) ── -->
+    <div id="game-levelup-overlay" class="game-modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Survivor Level Up">
+      <div class="game-modal levelup-modal">
+        <div class="levelup-header">
+          <div class="levelup-badge">⚡ SURVIVOR ASCENSION ⚡</div>
+          <h2 class="game-modal-title gold-title">CHOOSE YOUR UPGRADE</h2>
+          <p class="levelup-subtitle">The dark legion grows restless. Select an arcane boon to expand your power.</p>
+        </div>
+        <div class="levelup-cards-container" id="levelup-cards-container">
+          <!-- 3 Vertical Reward Cards rendered dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Pause Menu Modal Overlay -->
+    <div id="game-pause-overlay" class="game-modal-overlay hidden">
+      <div class="game-modal">
+        <h2 class="game-modal-title">⏸️ GAME PAUSED</h2>
+        <div class="game-modal-stats">
+          <div><span>Time:</span><strong id="pause-time">00:00</strong></div>
+          <div><span>Kills:</span><strong id="pause-kills">0</strong></div>
+          <div><span>Gold Collected:</span><strong id="pause-gold">0</strong></div>
+        </div>
+        <div class="game-modal-actions">
+          <button id="btn-resume-game" class="btn btn-primary" type="button">Resume Game</button>
+          <button id="btn-quit-game" class="btn btn-ghost" type="button">Quit &amp; Return to Hub</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over Modal Overlay -->
+    <div id="game-over-overlay" class="game-modal-overlay hidden">
+      <div class="game-modal game-over-modal">
+        <h2 class="game-modal-title danger">💀 SURVIVOR FALLEN</h2>
+        <p class="muted">You fought bravely against the endless hordes.</p>
+        <div class="game-modal-stats">
+          <div><span>Time Survived:</span><strong id="over-time">00:00</strong></div>
+          <div><span>Enemies Slain:</span><strong id="over-kills">0</strong></div>
+          <div><span>Level Reached:</span><strong id="over-level">1</strong></div>
+          <div class="gold-earned"><span>Gold Earned:</span><strong id="over-gold">+0</strong></div>
+        </div>
+        <div class="game-modal-actions">
+          <button id="btn-restart-game" class="btn btn-secondary" type="button">Fight Again</button>
+          <button id="btn-return-hub" class="btn btn-primary" type="button">Save &amp; Return to Hub</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Victory Modal Overlay (Phase 3 Co-op Boss Defeated) -->
+    <div id="game-victory-overlay" class="game-modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Victory">
+      <div class="game-modal victory-modal">
+        <div class="victory-crown">👑</div>
+        <h2 class="game-modal-title victory-title">DUNGEON CLEARED!</h2>
+        <p class="victory-sub">The Lich King has been vanquished!</p>
+        <div class="victory-reward-box">
+          <span class="reward-label">CO-OP VICTORY REWARD</span>
+          <div class="reward-amount">
+            <span class="cur-icon cur-diamond lg"></span>
+            <span class="reward-num">+15 Diamonds</span>
+          </div>
+        </div>
+        <p id="victory-countdown" class="muted small">Returning to Web Hub in 5s...</p>
+        <div class="game-modal-actions">
+          <button id="btn-victory-hub" class="btn btn-primary" type="button">Return to Hub Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3v3 Ranked Results Modal Overlay (Phase 4) -->
+    <div id="game-ranked-results-overlay" class="game-modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Match Results">
+      <div class="game-modal ranked-results-modal">
+        <div id="ranked-result-emblem" class="result-emblem">🏆</div>
+        <h2 id="ranked-result-title" class="game-modal-title victory-title">VICTORY!</h2>
+        <p id="ranked-result-sub" class="victory-sub">Your team scored the most points!</p>
+        
+        <div class="ranked-final-scores">
+          <div class="final-score-team red">
+            <span class="final-team-label">🔴 TEAM RED</span>
+            <strong id="results-red-score" class="final-score-num">0</strong>
+          </div>
+          <span class="score-vs-tag">VS</span>
+          <div class="final-score-team blue">
+            <span class="final-team-label">🔵 TEAM BLUE</span>
+            <strong id="results-blue-score" class="final-score-num">0</strong>
+          </div>
+        </div>
+
+        <div class="ranked-rewards-box">
+          <div class="reward-row">
+            <span class="reward-tag">RANK POINTS:</span>
+            <strong id="results-rp-change" class="reward-change positive">+25 RP</strong>
+          </div>
+          <div class="reward-row">
+            <span class="reward-tag">CURRENT TIER:</span>
+            <span id="results-tier-badge" class="tier-display">🥈 Silver (125 RP)</span>
+          </div>
+          <div class="reward-row">
+            <span class="reward-tag">RUBY REWARD:</span>
+            <strong id="results-ruby-change" class="reward-change positive">+5 Rubies 🔻</strong>
+          </div>
+        </div>
+
+        <p id="ranked-countdown" class="muted small">Returning to Web Hub in 5s...</p>
+        <div class="game-modal-actions">
+          <button id="btn-ranked-hub" class="btn btn-primary" type="button">Return to Hub Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Served automatically by the Socket.io server -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>
+

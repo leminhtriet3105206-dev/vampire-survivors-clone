@@ -1,0 +1,30 @@
+{
+  "name": "legendary-survival-backend",
+  "version": "1.0.0",
+  "description": "Legendary Survival - backend API (Express, MongoDB/Mongoose, Socket.io)",
+  "main": "src/server.js",
+  "private": true,
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/seed/runSeed.js",
+    "check": "node scripts/check-syntax.js",
+    "test": "node scripts/smoke-test.js",
+    "build:pygame": "node scripts/build-pygame.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.0",
+    "socket.io": "^4.8.1"
+  }
+}
+
